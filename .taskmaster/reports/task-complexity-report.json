@@ -1,0 +1,213 @@
+{
+	"meta": {
+		"generatedAt": "2025-11-09T10:35:08.169Z",
+		"tasksAnalyzed": 25,
+		"totalTasks": 25,
+		"analysisCount": 25,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Project initialization and environment setup",
+			"complexityScore": 3,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down the project initialization into subtasks covering: TanStack Start CLI initialization, TypeScript configuration, package.json scripts setup, environment file creation, git repository initialization, and dependency installation verification.",
+			"reasoning": "Standard project scaffolding with well-documented tools. Complexity is low-moderate due to multiple configuration files and environment setup, but follows established patterns. Requires 6 subtasks to cover CLI setup, TS config, build scripts, env templates, git init, and validation."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "Convex backend initialization and schema definition",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Create subtasks for: Convex installation and initialization, users table schema, workspaces table schema, memberships and roles schema, imports table with complex fields, events and tasks tables, contacts/comments/presence tables, indexes and query optimization setup.",
+			"reasoning": "Moderate-high complexity due to 10+ interconnected tables with relationships, enums, and indexes. Requires careful schema design for real-time queries. Proper indexing strategy is critical for performance. Schema changes in Convex require migration planning."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Sentry integration for error tracking and performance monitoring",
+			"complexityScore": 5,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Break into subtasks: Server-side Sentry SDK setup, client-side Sentry configuration, error boundary integration, performance instrumentation for critical flows, custom tags and context, source maps configuration, and beforeSend sanitization hook.",
+			"reasoning": "Moderate complexity requiring both server and client SDK setup with different configurations. Performance instrumentation requires understanding of application flow. Source maps and data sanitization add complexity. Integration points span multiple application layers."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Netlify deployment configuration and environment setup",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Create subtasks for: netlify.toml configuration file, environment variables setup in dashboard, SPA redirects and routing configuration, security headers setup, deploy preview configuration, and serverless functions timeout settings.",
+			"reasoning": "Moderate complexity due to multiple configuration layers (toml, env vars, headers, redirects). TanStack Start specific build settings may require iteration. Security headers and serverless timeout configuration require platform-specific knowledge."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Authentication system with user management",
+			"complexityScore": 7,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Break down into: Convex Auth installation and setup, OAuth provider configuration (GitHub/Google), session management with HTTP-only cookies, user queries and mutations in Convex, protected route middleware, login/signup UI components, user profile management, session persistence, and user avatar/menu UI.",
+			"reasoning": "High complexity involving OAuth flows, session security, protected routes, and real-time user state. Cookie-based sessions require security considerations. Multiple OAuth providers increase surface area. User profile management adds CRUD complexity."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Core navigation and layout structure",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Create subtasks for: TanStack Router installation and configuration, route tree structure setup, root layout with error boundaries, sidebar navigation component, workspace switcher UI, responsive layout with mobile support, active link highlighting and breadcrumbs, and route preloading implementation.",
+			"reasoning": "Moderate-high complexity due to comprehensive routing requirements across 10+ routes. Responsive design with collapsible sidebar adds complexity. Route preloading and loading states require router API knowledge. Layout component becomes central dependency for entire app."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Cloudflare Turnstile integration for import form protection",
+			"complexityScore": 5,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break into: Turnstile script integration in HTML head, TurnstileWidget React component, form integration and token handling, server-side validation endpoint, IP extraction and rate limiting, and error handling with Sentry logging.",
+			"reasoning": "Moderate complexity requiring both client widget and server validation. IP extraction from headers can vary by deployment. Server-side validation requires external API call. Error logging and rate limit handling add complexity."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Workspace creation and management",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Create subtasks for: workspace CRUD mutations in Convex, slug generation with uniqueness validation, membership management queries and mutations, role-based access control helpers, workspace switcher UI component, new workspace dialog with slug preview, member management UI in settings, and invite link generation.",
+			"reasoning": "Moderate-high complexity due to multi-tenant architecture with roles. Slug generation requires uniqueness checks. RBAC system affects all workspace operations. Invite flow requires secure link generation. UI components span multiple areas."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Firecrawl API integration for event page extraction",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down into: Firecrawl client library setup, extraction API endpoint integration with LLM mode, response parsing and normalization, error handling for various failure modes, retry logic with exponential backoff, timeout handling, extraction quality metrics logging to Sentry, and structured data schema definition.",
+			"reasoning": "High complexity due to external API dependency with LLM extraction. Response format may vary by page structure. Requires robust error handling for rate limits, timeouts, and invalid URLs. Retry logic adds state management complexity. Quality metrics require result analysis."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Import mapping logic for tasks and events creation",
+			"complexityScore": 8,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Create subtasks for: chrono-node date parsing integration, date normalization to ISO-8601 with timezone handling, task categorization rules engine (submission/judging/social/technical), priority assignment algorithm, contact extraction from specific sections, event mapping with start/end times, fallback logic for missing dates, structured output schema definition, and edge case handling.",
+			"reasoning": "High complexity requiring intelligent content analysis and categorization. Natural language date parsing is error-prone. Multiple mapping rules with priority logic. Timezone normalization is complex. Fallback logic requires user prompts. Critical business logic that determines application value."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Streaming import endpoint with real-time progress logs",
+			"complexityScore": 9,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Break into: import start endpoint with validation, Convex action for async processing, SSE endpoint setup with TanStack Start, EventSource client implementation, import status state machine, step-by-step logging at each phase, error handling with status updates, timeout implementation (60s), client-side log streaming UI, and real-time progress display.",
+			"reasoning": "Very high complexity combining SSE streaming, async actions, state management, and error handling. Requires coordination between multiple endpoints. Real-time logging adds significant complexity. Timeout and error recovery must preserve state. Critical user-facing feature requiring robust implementation."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Import preview and confirmation UI",
+			"complexityScore": 7,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Create subtasks for: multi-step form structure with TanStack Form, URL input step with Turnstile, streaming logs display component with SSE connection, preview panel UI for events/tasks/contacts, inline editing functionality for items, item selection with checkboxes, batch insert mutation to Convex, loading states and error handling, and success redirect with toast notification.",
+			"reasoning": "High complexity due to multi-step flow with real-time updates. SSE connection management in UI. Inline editing adds state complexity. Batch operations require transaction handling. Preview must handle variable data structures. Critical user experience touchpoint."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "Task CRUD operations with Convex mutations and queries",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down into: task queries (list, get, filter by status/assignee/labels), create/update/delete mutations, reorder and batch operations, search implementation with fuzzy matching, optimistic updates using Convex hooks, cascade delete and archival logic, assignee validation, and sorting implementations.",
+			"reasoning": "Moderate-high complexity due to comprehensive CRUD with filtering, search, and batch operations. Optimistic updates require careful state management. Search with Fuse.js adds dependency. Cascade delete affects data integrity. Core data layer for application."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "Kanban board UI with drag-and-drop and real-time collaboration",
+			"complexityScore": 8,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Create subtasks for: dnd-kit library setup and configuration, Kanban column layout with CSS Grid, TaskCard component design, drag-and-drop handlers with optimistic updates, real-time task subscription with Convex, keyboard navigation for accessibility, quick-add input per column, filters sidebar with multi-select, presence indicators on cards, and column collapse/expand functionality.",
+			"reasoning": "High complexity combining drag-and-drop, real-time sync, and rich UI. dnd-kit requires careful setup for sortable lists. Optimistic updates must handle race conditions. Presence indicators add real-time complexity. Keyboard accessibility is non-trivial. Critical feature requiring polish."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Task detail view with comments and presence",
+			"complexityScore": 7,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Break into: task detail route with dynamic params, task data fetching with real-time updates, inline editing for all fields, comments list with real-time subscription, comment CRUD mutations, markdown rendering for comments, presence heartbeat system, typing indicators using presence, and user avatar display for viewers.",
+			"reasoning": "High complexity due to real-time collaboration features. Inline editing across multiple fields. Comment system with markdown adds UI complexity. Presence heartbeat requires interval management. Typing indicators need debouncing. Rich interactive experience."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "Calendar view with week/month display and event management",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Create subtasks for: react-big-calendar library setup with date-fns localizer, event data fetching and mapping to calendar format, week and month view configuration, event creation dialog with datetime pickers, event editing and deletion, timezone handling and display, event color-coding by source, and real-time event updates.",
+			"reasoning": "Moderate-high complexity due to third-party calendar library integration. Timezone handling is error-prone. Real-time updates must preserve calendar state. Event CRUD requires modal management. Multi-timezone display adds complexity."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "ICS calendar feed generation and subscription",
+			"complexityScore": 5,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Break down into: ics library setup and event formatting, calendar feed endpoint with proper headers, timezone component (VTIMEZONE) for PT, ETag generation for caching, conditional GET implementation with 304 responses, subscribe button UI with instructions modal, and testing with multiple calendar apps.",
+			"reasoning": "Moderate complexity requiring ICS format specification knowledge. Timezone handling in ICS format. Caching with ETag requires hash generation. Calendar app compatibility testing needed. Standard protocol implementation."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "GitHub webhook handler for PR and CodeRabbit events",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Create subtasks for: webhook endpoint with signature verification, pull_request event handling, check_run event handling for CodeRabbit, task lookup and status updates, auto-unblock logic for approved PRs, idempotency using event IDs, error handling and Sentry logging, and webhook event replay testing.",
+			"reasoning": "High complexity due to webhook security, event parsing, and state synchronization. Signature verification is critical. Multiple event types require different handling. Auto-unblock adds business logic. Idempotency prevents duplicate processing. Integration point with external system."
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "Dev workflow page showing GitHub PRs and CodeRabbit status",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break into: dev page route and PR list UI, task-PR linking dialog with URL validation, PR status badge components, CodeRabbit status chip with color coding, manual refresh functionality using GitHub API, task completion gating logic, lock UI for unapproved PRs, and filter for PR-linked tasks only.",
+			"reasoning": "Moderate-high complexity combining UI, validation, and GitHub API integration. Manual polling requires API authentication. Gating logic affects task mutations. Real-time webhook updates must reflect in UI. Developer-focused feature requiring clarity."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "Autumn API integration for AI credit metering",
+			"complexityScore": 6,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Create subtasks for: Autumn API client library setup, credit balance queries, credit consumption mutations, local billing table sync in Convex, insufficient credits error handling with CTA, credits display UI component in navbar, and purchase flow integration with webhooks.",
+			"reasoning": "Moderate-high complexity due to dual storage (Autumn + Convex sync). Credit consumption requires atomic operations. Webhook handling for purchase events. UI must reflect real-time balance. Error handling affects user flow. Billing system foundation."
+		},
+		{
+			"taskId": 21,
+			"taskTitle": "AI-powered rules summarizer with credit gating",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down into: OpenAI SDK setup and API configuration, Convex action for rule summarization, credit balance checking before execution, OpenAI API call with structured output, JSON response parsing and validation, compliance task creation from AI output, credit consumption after success, and UI button with confirmation modal showing cost.",
+			"reasoning": "High complexity combining AI API, credit system, and task creation. Structured output parsing may fail. Credit gating requires transaction-like behavior. Error handling must not consume credits on failure. AI quality affects user value. Premium feature requiring polish."
+		},
+		{
+			"taskId": 22,
+			"taskTitle": "Public read-only workspace sharing",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Create subtasks for: workspace schema updates for isPublic and publicSlug, enable/disable sharing mutations with slug generation, public share route with slug lookup, read-only component variants (no mutations), public view banner with CTA, share settings UI with toggle and copy button, OpenGraph meta tags for previews, and access control validation.",
+			"reasoning": "Moderate-high complexity due to security considerations and component reuse. Read-only mode requires disabling mutations throughout. Slug generation must be unique. OpenGraph requires SSR/meta tag handling. Sharing controls affect permissions model."
+		},
+		{
+			"taskId": 23,
+			"taskTitle": "Sponsor usage documentation page",
+			"complexityScore": 3,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break into: sponsors page route creation, sponsor integration data structure with code references, acceptance criteria checklist UI with localStorage persistence, markdown export functionality for submission report, and footer link integration.",
+			"reasoning": "Low-moderate complexity as mostly static content assembly. Code references require manual documentation. localStorage for checkboxes is straightforward. Markdown export is simple string generation. Low technical complexity but requires thoroughness."
+		},
+		{
+			"taskId": 24,
+			"taskTitle": "Settings page with API tokens and health monitoring",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Create subtasks for: settings page with tabbed layout, general tab (workspace name/slug/delete), integrations tab with masked API keys, service connection testing (Firecrawl/Turnstile/Sentry), Sentry health dashboard integration, team tab with member management, billing tab with Autumn usage chart, and settings validation.",
+			"reasoning": "Moderate-high complexity due to multiple tabs with different concerns. API key masking requires security. Service health checks make external API calls. Member management integrates with workspace system. Usage charts require data visualization. Central configuration hub."
+		},
+		{
+			"taskId": 25,
+			"taskTitle": "Demo preparation and hackathon submission package",
+			"complexityScore": 8,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Break down into: demo script preparation with sample event URL, screen recording setup and execution (import flow), real-time collaboration demonstration, PR linking and CodeRabbit flow recording, calendar and ICS subscription demo, AI summarizer with credits demo, Sentry dashboard showcase, sponsors page walkthrough, public sharing demo, and Vibe Apps submission with social media posts.",
+			"reasoning": "High complexity requiring all features working end-to-end. Recording quality matters. 90-second constraint requires rehearsal. Multi-tab demo needs coordination. Vibe Apps submission has specific requirements. Social posts need precise @mentions. Time-sensitive with hard deadline. Success criteria is acceptance."
+		}
+	]
+}

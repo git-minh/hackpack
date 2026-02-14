@@ -1,13 +1,13 @@
 {
-  "name": "k8sapp",
+  "name": "hackpack",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Event-to-Workspace Planner: Transform hackathon/conference pages into collaborative workspaces with auto-generated tasks and calendar events",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "vinxi dev",
-    "build": "vinxi build",
-    "start": "vinxi start",
-    "preview": "vinxi preview",
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "serve": "vite preview",
     "typecheck": "tsc --noEmit",
     "routes": "tsr generate",
     "routes:watch": "tsr watch"
@@ -15,21 +15,26 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
-    "@tanstack/react-router": "^1.131.50",
-    "@tanstack/start": "^1.120.20",
+    "@tailwindcss/vite": "^4.0.6",
+    "@tanstack/nitro-v2-vite-plugin": "^1.132.31",
+    "@tanstack/react-devtools": "^0.7.0",
+    "@tanstack/react-router": "^1.132.0",
+    "@tanstack/react-router-devtools": "^1.132.0",
+    "@tanstack/react-router-ssr-query": "^1.131.7",
+    "@tanstack/react-start": "^1.132.0",
+    "@tanstack/router-plugin": "^1.132.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "vinxi": "^0.5.8",
-    "vite": "^7.2.2"
+    "tailwindcss": "^4.0.6",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
-    "@tanstack/router-cli": "^1.131.50",
-    "@tanstack/router-devtools": "^1.131.50",
-    "@tanstack/router-generator": "^1.131.50",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "typescript": "5.3"
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "typescript": "^5.7.2",
+    "vite": "^7.1.7"
   }
 }

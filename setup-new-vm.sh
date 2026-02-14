@@ -672,6 +672,16 @@ if [[ $INSTALL_NODEJS == true ]]; then
         curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
         sudo apt-get install -y nodejs
         echo "Node.js $(node --version) and npm $(npm --version) installed successfully"
+
+        # Install pnpm globally
+        echo "Installing pnpm..."
+        npm install -g pnpm
+        echo "pnpm $(pnpm --version) installed successfully"
+    elif command -v node &> /dev/null && ! command -v pnpm &> /dev/null; then
+        # Node.js exists but pnpm doesn't - install pnpm
+        echo "Installing pnpm..."
+        npm install -g pnpm
+        echo "pnpm $(pnpm --version) installed successfully"
     fi
 fi
 
@@ -979,7 +989,12 @@ fi
 if [[ $INSTALL_NODEJS == true ]] && command -v node &> /dev/null; then
     NODE_VERSION=$(node --version 2>/dev/null)
     NPM_VERSION=$(npm --version 2>/dev/null)
-    echo "✓ Node.js: $NODE_VERSION (npm: $NPM_VERSION)"
+    if command -v pnpm &> /dev/null; then
+        PNPM_VERSION=$(pnpm --version 2>/dev/null)
+        echo "✓ Node.js: $NODE_VERSION (npm: $NPM_VERSION, pnpm: $PNPM_VERSION)"
+    else
+        echo "✓ Node.js: $NODE_VERSION (npm: $NPM_VERSION)"
+    fi
     INSTALLED_COMPONENTS+=("Node.js")
 fi
 

@@ -26,14 +26,14 @@ Client (React + TanStack Start)
  └─ Cloudflare Turnstile widget
         │
         ▼
-Start Server Functions (Vite/TS) on Netlify
- ├─ /api/import.start      (POST)  -> validate Turnstile, enqueue Convex action
- ├─ /api/import.stream     (GET)   -> SSE/ReadableStream progress logs
- ├─ /calendar/:ws.ics      (GET)   -> ICS feed generation
- ├─ /webhooks/github       (POST)  -> verify HMAC, update task.prStatus
- ├─ /api/ai/summarize      (POST)  -> Autumn credit check + summarization
- ├─ /api/invite.exchange   (POST)  -> JWT -> session cookie for workspace
- └─ /api/turnstile.verify  (POST)  -> server-side Turnstile verification
+Start Server Functions (Nitro v2 preset) on Netlify
+ ├─ src/server/api/import.start.ts       (POST)  -> validate Turnstile, enqueue Convex action
+ ├─ src/server/api/import.stream.ts      (GET)   -> SSE/ReadableStream progress logs
+ ├─ src/server/calendar/[ws].ics.ts      (GET)   -> ICS feed generation
+ ├─ src/server/webhooks/github.ts        (POST)  -> verify HMAC, update task.prStatus
+ ├─ src/server/api/ai/summarize.ts       (POST)  -> Autumn credit check + summarization
+ ├─ src/server/api/invite.exchange.ts    (POST)  -> JWT -> session cookie for workspace
+ └─ src/server/api/turnstile.verify.ts   (POST)  -> server-side Turnstile verification
         │
         ▼
 Convex (Reactive DB: actions/queries)
@@ -56,11 +56,11 @@ Hosting/Infra
 
 ## 2) Tech Stack
 
-* **Framework**: TanStack Start (React), TanStack Router
+* **Framework**: TanStack Start (React), TanStack Router v2
 * **Language**: TypeScript strict
-* **Build**: Vite
+* **Build**: Vite + Nitro v2 (server preset)
 * **DB/Realtime**: Convex (actions/mutations/live queries)
-* **UI**: Headless primitives + dnd-kit for Kanban
+* **UI**: Headless primitives + dnd-kit for Kanban + Tailwind CSS
 * **Validation**: zod
 * **Date/tz**: date-fns-tz (normalize to UTC; store `sourceTz`)
 * **Telemetry**: Sentry (browser + server)
@@ -189,33 +189,39 @@ type ImportedTask  = { title: string; labels?: string[]; dueAt?: number };
 ### Route map
 
 ```
-/                    Dashboard (deadlines, activity)
-/import              Paste URL → streamed extraction → preview → "Create Plan"
-/tasks               Kanban board (Backlog, In Progress, Blocked, Done)
-/tasks/:taskId       Task detail (comments, presence, PR status)
-/calendar            Calendar (week/month)
-/dev                 PR list + CodeRabbit status chips
-/settings            Tokens (Firecrawl, Autumn), Sentry health, Turnstile test
-/share/:slug         Public read-only view (dashboard + tasks + calendar)
-/sponsors            Sponsor Usage checklist (auto-generated)
+/                    Dashboard (deadlines, activity)           -> src/routes/index.tsx
+/import              Paste URL → streamed extraction           -> src/routes/import.tsx
+/tasks               Kanban board                              -> src/routes/tasks.tsx
+/tasks/:taskId       Task detail (comments, presence)          -> src/routes/tasks.$taskId.tsx
+/calendar            Calendar (week/month)                      -> src/routes/calendar.tsx
+/dev                 PR list + CodeRabbit status chips          -> src/routes/dev.tsx
+/settings            Tokens, Sentry health, Turnstile test      -> src/routes/settings.tsx
+/share/:slug         Public read-only view                      -> src/routes/share.$slug.tsx
+/sponsors            Sponsor Usage checklist                    -> src/routes/sponsors.tsx
 ```
 
-### Loader/action signatures (TypeScript)
+**Route Tree**: Auto-generated at `src/routeTree.gen.ts` by TanStack Router CLI (`npm run routes`).
+
+### Server function signatures (Nitro v2)
 
 ```ts
-// /import (server action)
-export async function action_importStart({ request }: { request: Request }) {
-  const { url, turnstileToken, workspaceId } = await request.json();
+// src/server/api/import.start.ts
+export default defineEventHandler(async (event) => {
+  const { url, turnstileToken, workspaceId } = await readBody(event);
   await verifyTurnstile(turnstileToken);                 // throws on failure
   const importId = await convex.mutation('imports/start', { url, workspaceId });
   // kick off background Convex action that calls Firecrawl; streaming handled separately
-  return json({ importId });
-}
+  return { importId };
+});
 
-// /import.stream (SSE)
-export async function loader_importStream({ request }: { request: Request }) {
-  const importId = new URL(request.url).searchParams.get('importId')!;
+// src/server/api/import.stream.ts (SSE)
+export default defineEventHandler(async (event) => {
+  const importId = getQuery(event).importId as string;
   const encoder = new TextEncoder();
+
+  setResponseHeader(event, 'Content-Type', 'text/event-stream');
+  setResponseHeader(event, 'Cache-Control', 'no-cache');
+
   const stream = new ReadableStream({
     start(controller) {
       const unsub = convex.watchLogs(importId, (log) => {
@@ -228,13 +234,14 @@ export async function loader_importStream({ request }: { request: Request }) {
       });
     }
   });
-  return new Response(stream, {
-    headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' }
-  });
-}
+
+  return sendStream(event, stream);
+});
 ```
 
 > Client subscribes with `EventSource` and progressively renders a terminal‑style log and preview list as partial results arrive.
+
+**Nitro v2 APIs**: Use `defineEventHandler`, `readBody`, `getQuery`, `setResponseHeader`, `sendStream` from `h3`/Nitro.
 
 ---
 
@@ -616,51 +623,65 @@ const ImportedTaskZ = z.object({
 ## 21) Minimal File/Folder Layout
 
 ```
-/app
-  /routes
-    index.tsx
-    import.tsx                 // form + client stream
-    tasks.tsx
-    tasks.$taskId.tsx
-    calendar.tsx
-    dev.tsx
-    settings.tsx
-    share.$slug.tsx
-    sponsors.tsx
-  /server
-    api.import.start.ts
-    api.import.stream.ts
-    api.import.commit.ts
-    api.ai.summarize.ts
-    api.invite.exchange.ts
-    calendar.ics.ts
-    webhooks.github.ts
-    sentry.server.ts
-    turnstile.verify.ts
+/src
+  /routes                      # TanStack Router v2 file-based routes
+    __root.tsx                 # Root layout
+    index.tsx                  # Dashboard
+    import.tsx                 # Import form + client stream
+    tasks.tsx                  # Kanban board
+    tasks.$taskId.tsx          # Task detail
+    calendar.tsx               # Calendar view
+    dev.tsx                    # Dev/PR tools
+    settings.tsx               # Settings page
+    share.$slug.tsx            # Public share
+    sponsors.tsx               # Sponsor checklist
+  /server                      # Nitro v2 server functions
+    /api
+      /import
+        start.ts               # POST /api/import/start
+        stream.ts              # GET /api/import/stream (SSE)
+        commit.ts              # POST /api/import/commit
+      /ai
+        summarize.ts           # POST /api/ai/summarize
+      invite.exchange.ts       # POST /api/invite/exchange
+      turnstile.verify.ts      # POST /api/turnstile/verify
+    /calendar
+      [ws].ics.ts              # GET /calendar/:ws.ics
+    /webhooks
+      github.ts                # POST /webhooks/github
   /components
-    LogStream.tsx
-    KanbanBoard.tsx
-    TaskCard.tsx
-    CalendarView.tsx
-    PresenceAvatars.tsx
+    Layout.tsx                 # App layout wrapper
+    LogStream.tsx              # Streaming log display
+    KanbanBoard.tsx            # Kanban component
+    TaskCard.tsx               # Task card
+    CalendarView.tsx           # Calendar component
+    PresenceAvatars.tsx        # Presence indicators
   /lib
-    firecrawlAdapter.ts
-    mapping.ts
-    ics.ts
-    jwt.ts
-    validators.ts
-    github.ts
-    autumn.ts
-    convexClient.ts
-/convex
-  schema.ts
-  imports.ts
-  tasks.ts
-  events.ts
-  presence.ts
-  comments.ts
-  billing.ts
-netlify.toml
+    firecrawlAdapter.ts        # Firecrawl integration
+    mapping.ts                 # Event→task mapping
+    ics.ts                     # ICS generation
+    jwt.ts                     # JWT helpers
+    validators.ts              # Zod schemas
+    github.ts                  # GitHub API helpers
+    autumn.ts                  # Autumn billing
+    convexClient.ts            # Convex client setup
+    sentry.ts                  # Sentry instrumentation
+  client.tsx                   # Client entry point
+  router.tsx                   # Router instance
+  routeTree.gen.ts             # Auto-generated (DO NOT EDIT)
+
+/convex                        # Convex backend
+  schema.ts                    # Data model
+  imports.ts                   # Import actions/queries
+  tasks.ts                     # Task mutations/queries
+  events.ts                    # Event queries
+  presence.ts                  # Presence tracking
+  comments.ts                  # Comments
+  billing.ts                   # Autumn billing logic
+
+vite.config.ts                 # Vite + Nitro v2 config
+tsr.config.json                # TanStack Router config
+netlify.toml                   # Netlify deployment config
 ```
 
 ---

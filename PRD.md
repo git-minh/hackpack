@@ -347,10 +347,12 @@ Fallbacks:
 
 ## 21) Implementation Notes (quick pointers)
 
+* **File Structure**: Uses `src/` directory structure with TanStack Router v2 conventions.
+* **Server Functions**: Nitro v2 server preset for API routes, webhooks, and streaming endpoints in `src/server/`.
 * **Streaming**: Use TanStack Start loaders/actions with streamed responses for import logs (SSE or chunked render).
 * **Realtime**: Convex live queries for tasks, comments, presence; optimistic updates on drag.
 * **PR status**: If CodeRabbit API hookup is heavy, poll GitHub Checks API for a `coderabbit` check run status; map to `pending / changes_requested / approved`.
-* **Timezone**: Store UTC with `sourceTz` metadata; render with user’s tz; show PT for hackathon dates.
+* **Timezone**: Store UTC with `sourceTz` metadata; render with user's tz; show PT for hackathon dates.
 * **ICS**: Generate on the server; cache for 60s; ETag by workspace updatedAt.
 
 ---

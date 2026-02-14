@@ -465,17 +465,17 @@
         ]
       },
       {
-        "id": 6,
+        "id": "6",
         "title": "Core navigation and layout structure",
         "description": "Build the main application shell with navigation, routing, and responsive layout using TanStack Router",
-        "details": "Install @tanstack/react-router@latest. Create route tree in app/routes/ with __root.tsx (layout), index.tsx (dashboard), import.tsx, tasks.tsx, tasks/$taskId.tsx, calendar.tsx, dev.tsx, settings.tsx, share/$slug.tsx, sponsors.tsx. Implement RootRoute with ErrorBoundary and pending component. Create app/components/Layout.tsx with sidebar navigation (links to Dashboard, Import, Tasks, Calendar, Dev, Settings), workspace switcher, and user menu. Use Tailwind CSS for styling with mobile-first responsive design. Add active link highlighting using router's useMatch(). Implement collapsible sidebar for mobile. Add loading states using router's useNavigation(). Create breadcrumb navigation for deep routes. Set up route preloading on hover for instant navigation.",
-        "testStrategy": "Navigate between all routes and verify correct component rendering. Test responsive layout on mobile and desktop viewports. Verify active link highlighting. Test breadcrumb navigation. Confirm loading states appear during navigation.",
-        "priority": "high",
+        "status": "pending",
         "dependencies": [
           1,
           5
         ],
-        "status": "pending",
+        "priority": "high",
+        "details": "Install @tanstack/react-router@latest. Create route tree in app/routes/ with __root.tsx (layout), index.tsx (dashboard), import.tsx, tasks.tsx, tasks/$taskId.tsx, calendar.tsx, dev.tsx, settings.tsx, share/$slug.tsx, sponsors.tsx. Implement RootRoute with ErrorBoundary and pending component. Create app/components/Layout.tsx with sidebar navigation (links to Dashboard, Import, Tasks, Calendar, Dev, Settings), workspace switcher, and user menu. Use Tailwind CSS for styling with mobile-first responsive design. Add active link highlighting using router's useMatch(). Implement collapsible sidebar for mobile. Add loading states using router's useNavigation(). Create breadcrumb navigation for deep routes. Set up route preloading on hover for instant navigation. NOTE: Placeholder route files and basic Layout component have been created with responsive sidebar, mobile menu, active link highlighting, error boundaries, and 404 handler. TypeScript compilation verified. Full implementation and Convex integration pending.",
+        "testStrategy": "Navigate between all routes and verify correct component rendering. Test responsive layout on mobile and desktop viewports. Verify active link highlighting. Test breadcrumb navigation. Confirm loading states appear during navigation.",
         "subtasks": [
           {
             "id": 1,
@@ -483,7 +483,7 @@
             "description": "Install @tanstack/react-router@latest and set up initial router configuration with TypeScript support",
             "dependencies": [],
             "details": "Run npm install @tanstack/react-router@latest. Create app/routes directory structure. Set up router configuration in app/router.tsx with createRouter and RouterProvider. Configure TypeScript types for router context and route definitions. Verify installation by running dev server.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify package is installed in package.json. Confirm TypeScript compilation with no router-related errors. Test dev server starts successfully."
           },
           {
@@ -494,7 +494,7 @@
               1
             ],
             "details": "Create app/routes/__root.tsx as the root layout route. Add index.tsx for dashboard, import.tsx for import page, tasks.tsx for task list, tasks/$taskId.tsx for task detail (dynamic route), calendar.tsx, dev.tsx for development tools, settings.tsx, share/$slug.tsx for shared views (dynamic route), and sponsors.tsx. Each file should export a Route using createRoute or createFileRoute. Include basic placeholder components for each route.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Navigate to each route path and verify correct component renders. Test dynamic routes with sample IDs. Confirm route tree structure in router devtools."
           },
           {
@@ -505,7 +505,7 @@
               2
             ],
             "details": "In app/routes/__root.tsx, implement RootRoute with ErrorBoundary component to catch and display routing errors gracefully. Add pending component to show loading UI during route transitions. Include Outlet component for rendering child routes. Set up global error logging integration. Add NotFound component for 404 handling. Configure route context types.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Trigger navigation errors and verify ErrorBoundary displays error UI. Test pending states during slow route loads. Navigate to non-existent route and confirm 404 handling."
           },
           {
@@ -516,7 +516,7 @@
               3
             ],
             "details": "Create Layout.tsx component with sidebar navigation containing links to Dashboard, Import, Tasks, Calendar, Dev, and Settings. Use Link components from TanStack Router. Add user menu component in sidebar header. Implement workspace switcher UI component. Style with Tailwind CSS using mobile-first approach. Create semantic HTML structure with nav, aside, and main elements. Add aria labels for accessibility.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Render Layout component and verify all navigation links are present. Click each link and confirm navigation occurs. Verify sidebar structure is semantic and accessible."
           },
           {
@@ -538,7 +538,7 @@
               4
             ],
             "details": "Add responsive CSS classes using Tailwind breakpoints (sm:, md:, lg:). Implement sidebar state management with useState for open/closed. Add hamburger menu button visible only on mobile. Sidebar should be hidden by default on mobile and slide in when opened. Add overlay backdrop when sidebar is open on mobile. Ensure main content area adjusts when sidebar toggles. Use CSS transitions for smooth animations. Test on multiple viewport sizes.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test layout on mobile viewport (< 768px) and verify sidebar is hidden by default. Click hamburger menu and confirm sidebar slides in. Test on tablet and desktop viewports and verify sidebar is always visible. Verify backdrop click closes mobile sidebar."
           },
           {
@@ -550,7 +550,7 @@
               2
             ],
             "details": "Use useMatch() or useMatchRoute() hook from TanStack Router to detect active routes. Apply active styles (bg color, border, font weight) to current navigation link using Tailwind CSS. Create Breadcrumb component in app/components/Breadcrumb.tsx that reads current route path and generates breadcrumb trail. Display breadcrumbs in main content header for nested routes like tasks/$taskId. Style breadcrumbs with separators and links to parent routes.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Navigate between routes and verify current route link is highlighted in sidebar. Navigate to nested route like /tasks/123 and verify breadcrumb shows 'Tasks > Task 123'. Click breadcrumb segments and confirm navigation to parent routes."
           },
           {
@@ -564,6 +564,28 @@
             "details": "Configure router with preload: 'intent' option to enable hover preloading. Add onMouseEnter handlers to navigation links to trigger router.preloadRoute(). Use useNavigation() hook to detect pending navigations and show loading indicators. Create LoadingBar component that displays at top of layout during transitions. Add spinner or skeleton UI in pending component for route-level loading. Ensure preloaded routes cache properly. Test with network throttling to verify loading states.",
             "status": "pending",
             "testStrategy": "Hover over navigation links and verify route preloading occurs (check network tab). Navigate between routes and confirm loading bar appears during transitions. Test with slow network and verify loading states display appropriately. Verify preloaded routes navigate instantly on click."
+          },
+          {
+            "id": 9,
+            "title": "Integrate workspace switcher with Convex queries",
+            "description": "Connect workspace switcher component to Convex backend to fetch and manage user workspaces dynamically",
+            "dependencies": [
+              5
+            ],
+            "details": "Implement Convex query in convex/workspaces.ts to list workspaces for current user. Update WorkspaceSwitcher component to use Convex useQuery hook for reactive workspace data. Handle workspace selection by updating app context and triggering navigation. Implement create workspace mutation that adds new workspace to Convex database. Add loading states for workspace query. Handle empty state when user has no workspaces. Ensure workspace switching updates all dependent queries reactively.",
+            "status": "pending",
+            "testStrategy": "Open workspace switcher and verify workspaces load from Convex. Create new workspace and confirm it appears in list immediately. Switch workspaces and verify app context updates across all routes. Test with multiple browser tabs and confirm workspace changes sync in real-time."
+          },
+          {
+            "id": 10,
+            "title": "Enhance Layout with user menu and profile integration",
+            "description": "Build user menu component in Layout with profile display, settings link, and logout functionality",
+            "dependencies": [
+              4
+            ],
+            "details": "Create UserMenu component in app/components/UserMenu.tsx. Display user avatar and name from Convex auth context. Add dropdown menu with options: Profile, Settings, Logout. Implement logout handler using Convex auth mutation. Add link to settings route. Style with Tailwind CSS matching sidebar design. Add hover and focus states for accessibility. Handle loading state while user data fetches.",
+            "status": "pending",
+            "testStrategy": "Open user menu and verify user profile displays correctly. Click Settings and confirm navigation to settings route. Click Logout and verify user session ends and redirects to login. Test keyboard navigation through menu items."
           }
         ]
       },
@@ -2556,7 +2578,7 @@
     ],
     "metadata": {
       "created": "2025-11-09T10:31:00.254Z",
-      "updated": "2025-11-09T11:27:28.466Z",
+      "updated": "2025-11-09T11:57:09.584Z",
       "description": "Tasks for master context"
     }
   }
